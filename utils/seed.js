@@ -4,9 +4,10 @@ const Thought = require('../models/Thought');
 const { users, thoughts } = require('./data');
 
 const seedDB = async () => {
-  await mongoose.connect('mongodb://localhost:27017/socialNetwork');
-
   try {
+    await mongoose.connect('mongodb://localhost:27017/socialNetwork');
+    console.log('MongoDB connected');
+
     // Clear existing data
     await User.deleteMany({});
     await Thought.deleteMany({});
