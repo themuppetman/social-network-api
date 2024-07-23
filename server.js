@@ -1,14 +1,24 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/api/userRoutes');
+const friendRoutes = require('./routes/api/friendsRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
-
-connectDB();
 
 app.use(express.json());
 
-app.use('/api/users', require('./routes/api/userRoutes'));
-app.use('/api/thoughts', require('./routes/api/thoughtRoutes'));
+// Use the routes
+app.use('/users', userRoutes);
+app.use('/friends', friendRoutes);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/socialNetwork')
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(3001, () => {
+      console.log('Server is running on port 3001');
+    });
+  })
+  .catch(err => {
+    console.error('Connection error', err);
+  });

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Thought = require('../models/Thought');
-const { users, thoughts } = require('./data');
+const { users, thoughts, reactions } = require('./data');
 
 const seedDB = async () => {
   try {
@@ -21,10 +21,18 @@ const seedDB = async () => {
       return map;
     }, {});
 
+    // Update users with friends' IDs
+    for (let user of createdUsers) {
+      const friendsWithIds = user.friends.map(friendUsername => userMap[friendUsername]);
+      console.log(`Updating user ${user.username} with friends: `, friendsWithIds);
+      await User.findByIdAndUpdate(user._id, { friends: friendsWithIds }, { new: true, runValidators: true });
+    }
+
     // Map thoughts with user IDs and usernames
     const thoughtsWithUserIds = thoughts.map((thought) => ({
-      ...thought,
-      userId: userMap[thought.username], // Assign userId
+      thoughtText: thought.thoughtText,
+      username: thought.username,
+      userId: userMap[thought.username] // Assign userId
     }));
 
     // Insert thoughts
