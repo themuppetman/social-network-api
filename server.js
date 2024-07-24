@@ -1,24 +1,41 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const userRoutes = require('./routes/api/userRoutes');
-const friendRoutes = require('./routes/api/friendsRoutes');
+const db = require('./config/connection');
+const routes = require('./routes');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Use the routes
-app.use('/users', userRoutes);
-app.use('/friends', friendRoutes);
+// Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`Received request: ${req.method} ${req.url}`);
+  next();
+});
 
-// Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/socialNetwork')
-  .then(() => {
-    console.log('MongoDB connected');
-    app.listen(3001, () => {
-      console.log('Server is running on port 3001');
-    });
-  })
-  .catch(err => {
-    console.error('Connection error', err);
+app.use('/api', routes);
+
+// Catch-all for unmatched routes
+app.use((req, res, next) => {
+  const error = new Error('Wrong route!');
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  console.error(error.message);
+  res.status(error.status || 500).json({
+    message: error.message,
   });
+});
+
+db.once('open', () => {
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+  });
+});
+
+db.on('error', (err) => {
+  console.error('Mongoose connection error:', err.message);
+});

@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const { User } = require('../models');
 
 const addFriend = async (req, res) => {
   try {
@@ -7,8 +7,10 @@ const addFriend = async (req, res) => {
       { $addToSet: { friends: req.params.friendId } },
       { new: true }
     );
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -21,8 +23,10 @@ const removeFriend = async (req, res) => {
       { $pull: { friends: req.params.friendId } },
       { new: true }
     );
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }

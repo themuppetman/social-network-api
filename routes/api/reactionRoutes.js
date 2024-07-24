@@ -1,14 +1,10 @@
 const router = require('express').Router();
 const {
-  getAllReactions,
-  getReactionById,
-  createReaction,
-  deleteReaction,
-} = require('../../controllers/reactionController');
+  addReaction,
+  removeReaction,
+} = require('../../controllers/reactionsController');
 
-router.route('/').get(getAllReactions).post(createReaction);
-router.route('/:id').get(getReactionById).delete(deleteReaction);
-router.route('/:thoughtId/reactions').post(createReaction);
-router.route('/:thoughtId/reactions/:reactionId').delete(deleteReaction);
+router.route('/:thoughtId/reactions').post(addReaction);
+router.route('/:thoughtId/reactions/:reactionId').delete(removeReaction);
 
 module.exports = router;

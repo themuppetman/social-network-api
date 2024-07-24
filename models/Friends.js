@@ -1,16 +1,18 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const friendSchema = new mongoose.Schema({
-  username: {
-    type: String,
+const friendSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
-  friend: {
-    type: mongoose.Schema.Types.ObjectId,
+  friendId: {
+    type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
 });
 
-const Friend = mongoose.model('Friends', friendSchema);
+const Friend = model('Friend', friendSchema);
 
-module.exports = Friends;
+module.exports = Friend;
