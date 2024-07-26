@@ -15,6 +15,10 @@ const reactionSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId()
+  },
 });
 
 const Reaction = model('Reaction', reactionSchema);

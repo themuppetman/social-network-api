@@ -19,14 +19,17 @@ const users = [
 
 const thoughts = [
   {
+    thoughtId: 1,
     thoughtText: 'This is a sample thought',
     username: 'john_doe',
   },
   {
+    thoughtId: 2,
     thoughtText: 'Another example thought',
     username: 'jane_doe',
   },
   {
+    thoughtId: 3,
     thoughtText: 'I disagree with the above thoughts',
     username: 'jim_smith',
   }
@@ -35,14 +38,17 @@ const thoughts = [
 
 const reactions = [
   {
+    reactionId: 1,
     reactionBody: 'I agree!',
     username: 'john_doe',
   },
   {
-    reactionBody: 'I disagree :(',  
+    reactionId: 2,
+    reactionBody: 'I disagree!',  
     username: 'jane_doe',
   },
   {
+    reactionId: 3,
     reactionBody: 'I have no opinion',
     username : 'jim_smith',
   }

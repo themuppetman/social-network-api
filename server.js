@@ -8,6 +8,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// use your routes
+app.use(routes);
+
+
 // Middleware to log requests
 app.use((req, res, next) => {
   console.log(`Received request: ${req.method} ${req.url}`);
